@@ -31,7 +31,18 @@ git clone https://github.com/YYSSSFF/n8n.git
 ````
 2. Start n8n (Docker of lokaal):
 ``` bash
-docker-compose up -d
+docker run -it --rm \
+ --name n8n \
+ -p 5678:5678 \
+ -e DB_TYPE=postgresdb \
+ -e DB_POSTGRESDB_DATABASE=postgres \
+ -e DB_POSTGRESDB_HOST=<SUPBASE_HOST_PARAMETER> \
+ -e DB_POSTGRESDB_PORT=5432 \
+ -e DB_POSTGRESDB_USER=<SUPABASE_USER_PARAMETER> \
+ -e DB_POSTGRESDB_SCHEMA=public \
+ -e DB_POSTGRESDB_PASSWORD=<SUPABASE_DATABASE_PASSWORD> \
+ -e N8N_ENCRYPTION_KEY=<ENCRYPTION_KEY> \
+ docker.n8n.io/n8nio/n8n
 ```
 3. Importeer de n8n workflow JSON en stel je API-keys in (OpenWeather & ChatGPT).
 4. Voeg je e-mail en Discord-webhook toe in de workflow.
