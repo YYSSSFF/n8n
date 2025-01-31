@@ -27,8 +27,7 @@ Alle meldingen worden verzonden via e-mail en Discord.
 ## Installatie & Gebruik
 1. Clone de repository:
 ````bash
-git clone https://github.com/jouw-gebruikersnaam/n8n-weerbericht.git
-cd n8n-weerbericht
+git clone https://github.com/YYSSSFF/n8n.git
 ````
 2. Start n8n (Docker of lokaal):
 ``` bash
