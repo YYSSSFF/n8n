@@ -1,0 +1,1090 @@
+{
+  "name": "weather_app main",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        -1440
+      ],
+      "id": "7513b1fc-0caa-442f-a73b-61f7fd4c1342",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8ndeepdive03@gmail.com",
+        "toEmail": "n8ndeepdive03@gmail.com",
+        "subject": "Weather Update: Amsterdam",
+        "html": "={{ $json.message.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1180,
+        -1760
+      ],
+      "id": "1370a25b-a484-4a98-82b8-196f68900aaa",
+      "name": "Send Email",
+      "executeOnce": false,
+      "credentials": {
+        "smtp": {
+          "id": "PgpL5ZH6tgulDXWu",
+          "name": "SMTP account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Main: {{ $json.weather[0].main }}\nDescription: {{ $json.weather[0].description }}\nTemp: {{ $json.main.temp }}\nFeels_like: {{ $json.main.feels_like }}\nTemp_min: {{ $json.main.temp_min }}\nTemp_max: {{ $json.main.temp_max }}\nPressure: {{ $json.main.pressure }}\nHumidity: {{ $json.main.humidity }}\nSea_level: {{ $json.main.sea_level }}\nGmd_level: {{ $json.main.grnd_level }}\nVisibility: {{ $json.visibility }}\nwind\nSpeed: {{ $json.wind.speed }}\nDeg: {{ $json.wind.deg }}\nClouds: {{ $json.clouds.all }}\nSys: \nCountry:{{ $json.sys.country }}\nSunrise: {{ $json.sys.sunrise }}\nSunset: {{ $json.sys.sunset }}\nTimezone: {{ $json.timezone }}\nName: {{ $json.name }}\n\nMaak een samenvatting op basis van de weergegevens, in leuke verhaalvorm voor tieners. Wat raad je mij aan te dragen?  Bedenk daarna een unieke smoes die ik mijn docent kan vertellen om niet naar school te komen. (max 100 tekens)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        340,
+        -1760
+      ],
+      "id": "e52c6350-e0ef-4af9-97ef-e9071a9f5f08",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "s6xgBmvGunLFDdyX",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "cityName": "amsterdam,nl"
+      },
+      "name": "OpenWeatherMap1",
+      "type": "n8n-nodes-base.openWeatherMap",
+      "position": [
+        140,
+        -1780
+      ],
+      "typeVersion": 1,
+      "id": "5e219192-53b8-4cbc-bf8a-458f699f86cf",
+      "executeOnce": false,
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "u0Ru4Y8CSjTH0R01",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.message.content }}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        -1460
+      ],
+      "id": "ab8c9899-c36e-4060-8966-9de89bfa6edf",
+      "name": "Discord1",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "5Oae0zVr9o54q9Hm",
+          "name": "Discord Webhook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Maak, op basis van de gegevens het is dam weather foarcast van dit bestand, een mooi en aantrekkelijk html-bestand eromheen. doe het context binnen een variable geeoon html  \n{{ $json.message.content }}\n\n\n\ngeef op alleen de html code geen \"hier is jouw html code\" e.c.t."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        700,
+        -1760
+      ],
+      "id": "3ee00a54-f689-4653-9e25-e89dad540933",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "s6xgBmvGunLFDdyX",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=🌧️ Het regent nu in Amsterdam 🌧️\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        320
+      ],
+      "id": "e0b29c6f-2ead-433e-a4cc-0077ed21a650",
+      "name": "Discord",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "5Oae0zVr9o54q9Hm",
+          "name": "Discord Webhook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "interval": 30,
+        "unit": "minutes"
+      },
+      "name": "Weather Check Trigger1",
+      "type": "n8n-nodes-base.interval",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        340
+      ],
+      "id": "0f567f26-4ae0-4480-8a1b-2cf96b83d475"
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&appid=434bdaf65281654763c3367e76fc438d&units=metric",
+        "options": {}
+      },
+      "name": "Get Weather1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        100,
+        80
+      ],
+      "id": "17936a60-0c75-4a9a-b42b-6f6b685a12fb"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.weather[0].main }}",
+              "value2": "Rain"
+            }
+          ]
+        }
+      },
+      "name": "Check If It Rains1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        480,
+        120
+      ],
+      "id": "10c1ce98-9f16-4156-97f9-8e08a25f794b"
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8ndeepdive03@gmail.com",
+        "toEmail": "n8ndeepdive03@gmail.com",
+        "subject": "Weather Update: Amsterdam",
+        "html": "<!DOCTYPE html>\n<html lang=\"nl\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Regen in Amsterdam</title>\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, sans-serif; text-align: center; background-color: #d9e7ff;\">\n\n    <!-- Container voor de content -->\n    <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n        <tr>\n            <td align=\"center\" style=\"padding: 20px 0;\">\n                <!-- Achtergrondafbeelding -->\n                <img src=\"https://www.clinkhostels.com/wp-content/themes/yootheme/cache/5a/ams-rain-5a55dc68.webp\" width=\"600\" alt=\"Regen in Amsterdam\" style=\"max-width: 100%; display: block; border-radius: 10px;\">\n            </td>\n        </tr>\n        <tr>\n            <td align=\"center\" style=\"padding: 15px;\">\n                <!-- Titelbalk met regenbericht -->\n                <table role=\"presentation\" width=\"80%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\" style=\"background-color: #00274d; color: white; font-size: 20px; font-weight: bold; text-align: center; border-radius: 8px;\">\n                    <tr>\n                        <td style=\"padding: 15px;\">\n                            🌧️ Het regent in Amsterdam 🌧️\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n    </table>\n\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        820,
+        100
+      ],
+      "id": "22dd68bf-572b-4c30-a03d-7ec4f1c5d61d",
+      "name": "Send Email3",
+      "credentials": {
+        "smtp": {
+          "id": "PgpL5ZH6tgulDXWu",
+          "name": "SMTP account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 560,
+        "width": 1740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -1840
+      ],
+      "id": "4fa4a795-2c7d-4084-af84-a2219cc8053a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "1-Trigger  elke dag open weather map api\n",
+        "height": 180,
+        "width": 300,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -1500
+      ],
+      "id": "b323fe8d-37a7-465a-a0a0-a847fb94a986",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "5-Haalt het gestuurde data geeft en heeft het html formaat.",
+        "height": 180,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        680,
+        -1820
+      ],
+      "id": "ea301eb2-ee8d-451e-8077-7dd485cee388",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "3-Maak de data in het bericht en stuur het naar de Discord. Maak elke keer een nieuwe Smoes.",
+        "height": 180,
+        "width": 380,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        280,
+        -1820
+      ],
+      "id": "fbf3b21f-ad63-4d5b-a3df-29665e99a9d2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "4-Stuur een bericht, over het weer en smoes naar discord",
+        "height": 200,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        820,
+        -1500
+      ],
+      "id": "e20124a5-e329-47d2-8c13-a737c6b9fe19",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "2-Haalt data uit die api over het weer.",
+        "height": 180,
+        "width": 380,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -1800
+      ],
+      "id": "cf24cd7b-3f47-4838-8175-42ab741d0b71",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "5-Stuur mail naar gegeven email.\n",
+        "height": 180,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -1820
+      ],
+      "id": "b79e73fd-ca77-4ea0-af0e-cc88c7573f5f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 560,
+        "width": 1740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -40
+      ],
+      "id": "1997c4f3-1fa2-4ca8-bd96-9a32f7044ae2",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "1-Trigger elke dertig minuten get weather map api\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        260
+      ],
+      "id": "73f3a8ae-5504-4e5d-b48f-996c09ba692e",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "2-Haalt regen data uit weer api.\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        20
+      ],
+      "id": "b3c558c7-6cb8-4820-b18a-2cb08130557f",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "3-Controleer of het regent.\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        380,
+        40
+      ],
+      "id": "1b839755-81c0-409c-8e74-8cd1dd491cc7",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "4-Stuur een e-mail, het regent, naar het opgegeven e-mailadres.",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        40
+      ],
+      "id": "b4e3d3c3-be43-469e-a8a1-a696214c53b7",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "5-Stuur een bericht, het regent naar discord.",
+        "height": 200,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        280
+      ],
+      "id": "73b29ec1-8591-4589-bbfb-2e639b38997e",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 560,
+        "width": 1740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -640
+      ],
+      "id": "713d6ed1-1882-4f88-8b48-80ce74ec2072",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.wind.speed }}",
+              "operation": "largerEqual",
+              "value2": 19.4
+            }
+          ]
+        }
+      },
+      "name": "Vergelijk Variabelen",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -480
+      ],
+      "id": "48d4ded3-ca78-4bd8-9cad-03ecb184c2ae"
+    },
+    {
+      "parameters": {
+        "interval": 30,
+        "unit": "minutes"
+      },
+      "name": "Weather Check Trigger2",
+      "type": "n8n-nodes-base.interval",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        -260
+      ],
+      "id": "bfda4b79-5214-4c43-9694-956b4903ce82"
+    },
+    {
+      "parameters": {
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&appid=434bdaf65281654763c3367e76fc438d&units=metric",
+        "options": {}
+      },
+      "name": "Get Weather2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -500
+      ],
+      "id": "23df9e33-182f-4133-a417-c6346c83aeaa"
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8ndeepdive03@gmail.com",
+        "toEmail": "n8ndeepdive03@gmail.com",
+        "subject": "Weather Update: Amsterdam",
+        "html": "<!DOCTYPE html>\n<html lang=\"nl\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Regen in Amsterdam</title>\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, sans-serif; text-align: center; background-color: #d9e7ff;\">\n\n    <!-- Container voor de content -->\n    <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n        <tr>\n            <td align=\"center\" style=\"padding: 20px 0;\">\n                <!-- Achtergrondafbeelding -->\n                <img src=\"https://www.desintnykster.nl/images/fot/19/06/201116_novemberstorm_166.jpg\" width=\"600\" alt=\"Regen in Amsterdam\" style=\"max-width: 100%; display: block; border-radius: 10px;\">\n            </td>\n        </tr>\n        <tr>\n            <td align=\"center\" style=\"padding: 15px;\">\n                <!-- Titelbalk met regenbericht -->\n                <table role=\"presentation\" width=\"80%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\" style=\"background-color: #00274d; color: white; font-size: 20px; font-weight: bold; text-align: center; border-radius: 8px;\">\n                    <tr>\n                        <td style=\"padding: 15px;\">\n                            Het wind in Amsterdam is meer dan 70 km/uur 💨, zorg ervoor dat jij veilig bent ⚠️.\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n    </table>\n\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        820,
+        -480
+      ],
+      "id": "8ae883fe-ad92-4593-9ce8-c5f753a9b26b",
+      "name": "Send Email5",
+      "credentials": {
+        "smtp": {
+          "id": "PgpL5ZH6tgulDXWu",
+          "name": "SMTP account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "= Het wind in Amsterdam is meer dan 70 km/uur 💨, zorg ervoor dat jij veilig bent ⚠️.\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        -260
+      ],
+      "id": "0b00511c-3ea9-4bae-8e8b-7b43d662b264",
+      "name": "Discord3",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "5Oae0zVr9o54q9Hm",
+          "name": "Discord Webhook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "1-Trigger elke dertig minuten get weather map api\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -320
+      ],
+      "id": "d01be784-e55f-43d7-af69-ce2a0402935e",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "2-Haalt wind data uit weer api.\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -560
+      ],
+      "id": "5547f9a3-7bda-435d-b742-12eab11ee68c",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "3-Controleer of het wind.\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        360,
+        -560
+      ],
+      "id": "b81b1aa8-b93b-44d2-bba9-2593039664a9",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "4-Stuur een e-mail, het wind, naar het opgegeven e-mailadres.",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        700,
+        -540
+      ],
+      "id": "9bafdbf5-a73e-4aa6-8a42-4d508c5a7c5b",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "5-Stuur een bericht, het wind naar discord.",
+        "height": 200,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        980,
+        -300
+      ],
+      "id": "ac8c4266-a761-40aa-99b8-d69943b2b851",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 560,
+        "width": 1740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -1220
+      ],
+      "id": "3c5abc56-d8b5-4779-b0b9-200fcf607b75",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Main: {{ $json.weather[0].main }}\nDescription: {{ $json.weather[0].description }}\nTemp: {{ $json.main.temp }}\nFeels_like: {{ $json.main.feels_like }}\nTemp_min: {{ $json.main.temp_min }}\nTemp_max: {{ $json.main.temp_max }}\nPressure: {{ $json.main.pressure }}\nHumidity: {{ $json.main.humidity }}\nSea_level: {{ $json.main.sea_level }}\nGmd_level: {{ $json.main.grnd_level }}\nVisibility: {{ $json.visibility }}\nwind\nSpeed: {{ $json.wind.speed }}\nDeg: {{ $json.wind.deg }}\nClouds: {{ $json.clouds.all }}\nSys: \nCountry:{{ $json.sys.country }}\nSunrise: {{ $json.sys.sunrise }}\nSunset: {{ $json.sys.sunset }}\nTimezone: {{ $json.timezone }}\nName: {{ $json.name }}\n\nAls het weer goed is: True (output)\nAls het weer slecht is: False (output\ndus true is goede weer en false is als het slecht weer is \nHet weer is goed als het warm en zonnig is.\nHet weer is slecht als het koud en bewolkt is. \n\ngeef geen samenvatting van het weer, alleen de output True of False.\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        300,
+        -1100
+      ],
+      "id": "9e46d06f-855c-40a6-9f01-2a28fd4eb0d5",
+      "name": "OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "s6xgBmvGunLFDdyX",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "cityName": "amsterdam,nl"
+      },
+      "name": "OpenWeatherMap",
+      "type": "n8n-nodes-base.openWeatherMap",
+      "position": [
+        140,
+        -840
+      ],
+      "typeVersion": 1,
+      "id": "a8b24344-2afc-4aa9-a4d3-ca01d984adb1",
+      "executeOnce": false,
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "u0Ru4Y8CSjTH0R01",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8ndeepdive03@gmail.com",
+        "toEmail": "n8ndeepdive03@gmail.com",
+        "subject": "Weather Update: Amsterdam",
+        "html": "<!DOCTYPE html>\n\n<html lang=\"nl\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Regen in Amsterdam</title>\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, sans-serif; text-align: center; background-color: #d9e7ff;\">\n\n    <!-- Container voor de content -->\n    <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n        <tr>\n            <td align=\"center\" style=\"padding: 20px 0;\">\n                <!-- Achtergrondafbeelding -->\n                <img src=\"https://preview.redd.it/415jzq43zct91.jpg?width=640&crop=smart&auto=webp&s=b471410546ef5dd383f90f14395ccf3386ae8753\" width=\"600\" alt=\"Regen in Amsterdam\" style=\"max-width: 100%; display: block; border-radius: 10px;\">\n            </td>\n        </tr>\n        <tr>\n            <td align=\"center\" style=\"padding: 15px;\">\n                <!-- Titelbalk met regenbericht -->\n                <table role=\"presentation\" width=\"80%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\" style=\"background-color: #00274d; color: white; font-size: 20px; font-weight: bold; text-align: center; border-radius: 8px;\">\n                    <tr>\n                        <td style=\"padding: 15px;\">\n                            Het weer is perfect in Amsterdam 🌞, ga naar buiten! 🌳\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n    </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1180,
+        -1140
+      ],
+      "id": "adb14c0f-4bf2-43d6-b8a1-4e90f30e5eac",
+      "name": "Send Email4",
+      "credentials": {
+        "smtp": {
+          "id": "PgpL5ZH6tgulDXWu",
+          "name": "SMTP account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message.content }}",
+              "value2": "True"
+            }
+          ]
+        }
+      },
+      "name": "Vergelijk Variabelen1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        700,
+        -1080
+      ],
+      "id": "151e3fb2-8faa-490f-be15-1e6e939f4de7"
+    },
+    {
+      "parameters": {
+        "interval": 30,
+        "unit": "minutes"
+      },
+      "name": "Weather Check Trigger",
+      "type": "n8n-nodes-base.interval",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        -1020
+      ],
+      "id": "8406299a-08ad-4482-b0dc-15dfb5afed34"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=Het weer is perfect in Amsterdam 🌞, ga naar buiten! 🌳\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        -860
+      ],
+      "id": "77b03331-bb20-4140-b5fa-e2dd09e5ea70",
+      "name": "Discord4",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "5Oae0zVr9o54q9Hm",
+          "name": "Discord Webhook account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "1-Trigger elke dertig minuten get weather map api\n",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -1080
+      ],
+      "id": "32b9a002-1b5c-4e02-b768-db5105b669f4",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "2-Haalt data uit die api over het weer.",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        60,
+        -900
+      ],
+      "id": "60749130-1388-4055-9dd6-9b19291c55f4",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {
+        "content": "3-constateert of perfect weer is.",
+        "height": 180,
+        "width": 380,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        260,
+        -1160
+      ],
+      "id": "b9dd2b62-0ab9-42b0-ae4d-abf2a2ff7029",
+      "name": "Sticky Note22"
+    },
+    {
+      "parameters": {
+        "content": "4-Controleer of het perfect weer is.",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        660,
+        -1140
+      ],
+      "id": "a78d14a6-08ad-474c-8b87-39b35fa279a8",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "content": "5-Stuur een e-mail: het is perfect weer naar het opgegeven e-mailadres.",
+        "height": 220,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        -1200
+      ],
+      "id": "9de6453d-2943-4012-9743-6e9685350839",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "content": "6-Stuur een bericht, het weer is perfect naar discord.",
+        "height": 200,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        -900
+      ],
+      "id": "c96cc985-2e5f-4ade-8794-20b28d5a965c",
+      "name": "Sticky Note25"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenWeatherMap1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Discord1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weather Check Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get Weather1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather1": {
+      "main": [
+        [
+          {
+            "node": "Check If It Rains1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If It Rains1": {
+      "main": [
+        [
+          {
+            "node": "Send Email3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Send Email3": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vergelijk Variabelen": {
+      "main": [
+        [
+          {
+            "node": "Send Email5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Weather Check Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get Weather2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather2": {
+      "main": [
+        [
+          {
+            "node": "Vergelijk Variabelen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email5": {
+      "main": [
+        [
+          {
+            "node": "Discord3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI2": {
+      "main": [
+        [
+          {
+            "node": "Vergelijk Variabelen1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "main": [
+        [
+          {
+            "node": "OpenAI2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email4": {
+      "main": [
+        [
+          {
+            "node": "Discord4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vergelijk Variabelen1": {
+      "main": [
+        [
+          {
+            "node": "Send Email4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weather Check Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "54457b5b-b0f5-4a70-8eab-c90144bbd613",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "596f52c2b5a60d82e20c8caea2180c0460f2779e1f56cf493459d0ea9a62ce5c"
+  },
+  "id": "vpQulRWcyJziZ3od",
+  "tags": []
+}
