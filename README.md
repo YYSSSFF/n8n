@@ -31,7 +31,7 @@ git clone https://github.com/YYSSSFF/n8n.git
 ````
 2. Start n8n (Docker of lokaal):
 ``` bash
-docker run -it --rm \
+winpty (als je Windows gebruikt) docker run -it --rm \
  --name n8n \
  -p 5678:5678 \
  -e DB_TYPE=postgresdb \
