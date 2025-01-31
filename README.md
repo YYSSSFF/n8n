@@ -23,6 +23,8 @@ Alle meldingen worden verzonden via e-mail en Discord.
 - OpenWeather API – Weerdata ophalen
 - ChatGPT API – AI gegenereerde smoesjes en verhalen
 - E-mail & Discord Webhooks – Meldingen versturen
+- Supabase Database – Gebruik PostgreSQL in de cloud voor opslag.
+- Docker Deployment – Draai n8n eenvoudig via Docker.
 
 ## Installatie & Gebruik
 1. Clone de repository:
