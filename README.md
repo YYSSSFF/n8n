@@ -13,18 +13,23 @@ Dit n8n-project combineert een dagelijks weerbericht met een unieke smoes-genera
 Alle meldingen worden verzonden via e-mail en Discord. 
 
 ## Functionaliteiten
-- Automatische Weerupdates – Haalt actuele weerdata op via de OpenWeather API. 
-- AI Smoes-Generator – Laat ChatGPT een smoes bedenken, als excuus om niet naar school te gaan. 
-- Waarschuwingen voor Extreem Weer – Regen-, storm- en zonnemeldingen. 
-- E-mail & Discord Notificaties – Dagelijkse updates rechtstreeks in je inbox of Discord-kanaal. 
+- Automatische Weerupdates – Haalt actuele weerdata op via de OpenWeather API.
+- AI Smoes-Generator – Laat ChatGPT een smoes bedenken op basis van het weer.
+- Waarschuwingen voor Extreem Weer – Regen-, storm- en zonnemeldingen.
+- E-mail & Discord Notificaties – Dagelijkse updates rechtstreeks in je inbox of Discord-kanaal.
+- Supabase Database – Gebruik PostgreSQL in de cloud voor opslag.
+- Docker Deployment – Draai n8n eenvoudig via Docker.
+- Ngrok Integratie – Externe toegang tot je n8n instance via een beveiligde tunnel.
 
 ## Technologieën
 - n8n – Workflow automation
-- OpenWeather API – Weerdata ophalen
-- ChatGPT API – AI gegenereerde smoesjes en verhalen
-- E-mail & Discord Webhooks – Meldingen versturen
-- Supabase Database – Gebruik PostgreSQL in de cloud voor opslag.
-- Docker Deployment – Draai n8n eenvoudig via Docker.
+- Docker – Voor eenvoudige installatie en uitvoering
+- Supabase (PostgreSQL) – Cloud database voor opslag
+- OpenWeather API – Haalt weergegevens op
+- ChatGPT API – Genereert creatieve smoesjes
+- Ngrok – Zorgt voor externe toegang tot je n8n-instance
+- E-mail & Discord Webhooks – Versturen van meldingen
+
 
 ## Installatie & Gebruik
 1. Clone de repository:
